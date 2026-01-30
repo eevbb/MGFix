@@ -3,9 +3,16 @@
 	"EngineAssociation": "5.5",
 	"Category": "",
 	"Description": "",
+	"Modules": [
+		{
+			"Name": "MG",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
 	"Plugins": [
 		{
-			"Name": "AssetManagerEditor",
+			"Name": "JsonAsAsset",
 			"Enabled": true
 		}
 	]
