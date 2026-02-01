@@ -21,7 +21,7 @@ SKIRT_DAMPING = 0.5
 -- Careful! if you set this to 0 and gravity to a positive number, the skirt
 -- *will* go up and never come back down! 🤣
 -- Set to 1 for vanilla behavior.
-SKIRT_STIFFNESS = 0.4
+SKIRT_STIFFNESS = 0.45
 
 -- Disable the angle limit on the back of the skirt so it can flip properly.
 -- Set to false for vanilla behavior.
@@ -31,7 +31,7 @@ SKIRT_UNCONSTRAINED = true
 -- Set to false for vanilla behavior.
 HIDE_VENT_DRONE = true
 
-function applySkirtPhysics(inst, modded)
+function applySkirtPhysics(inst, func)
     if inst == nil or not inst:IsValid() then return end
 
     local gravity = 0
@@ -58,25 +58,43 @@ function applySkirtPhysics(inst, modded)
         if target == nil or not target:IsValid() or count > 100 then break end
 
         if string.find(target.RootBone.BoneName:ToString(), "Skirt") then
-            target.Gravity.Z = gravity
-            target.DampingCurveData.EditorCurveData.Keys = {{Time = 0, Value = damping}}
-            target.StiffnessCurveData.EditorCurveData.Keys = {{Time = 0, Value = stiffness}}
-            if unconstrained then
-                target.LimitAngleCurveData.EditorCurveData.Keys = {{Time = 0, Value = 0}}
-            else
-                target.LimitAngleCurveData.EditorCurveData.Keys = {}
-            end
+            func(target)
         end
     end
 end
 
-function applySkirtPhysicsToAll(modded)
+function applySkirtPhysicsToAll(func)
     local insts = FindAllOf("AnimInstance")
     if insts ~= nil then
         for _, inst in ipairs(insts) do
-            applySkirtPhysics(inst, modded)
+            applySkirtPhysics(inst, func)
         end
     end
+end
+
+function skirtPhysicsVanilla(target)
+    target.Gravity.Z = 0
+    target.DampingCurveData.EditorCurveData.Keys = {}
+    target.StiffnessCurveData.EditorCurveData.Keys = {}
+    target.LimitAngleCurveData.EditorCurveData.Keys = {}
+end
+
+function skirtPhysicsModded(target)
+    target.Gravity.Z = SKIRT_GRAVITY
+    target.DampingCurveData.EditorCurveData.Keys = {{Time = 0, Value = SKIRT_DAMPING}}
+    target.StiffnessCurveData.EditorCurveData.Keys = {{Time = 0, Value = SKIRT_STIFFNESS}}
+    if SKIRT_UNCONSTRAINED then
+        target.LimitAngleCurveData.EditorCurveData.Keys = {{Time = 0, Value = 0}}
+    else
+        target.LimitAngleCurveData.EditorCurveData.Keys = {}
+    end
+end
+
+function skirtPhysicsFlip(target)
+    target.Gravity.Z = 2500
+    target.DampingCurveData.EditorCurveData.Keys = {{Time = 0, Value = 0}}
+    target.StiffnessCurveData.EditorCurveData.Keys = {{Time = 0, Value = 0}}
+    target.LimitAngleCurveData.EditorCurveData.Keys = {{Time = 0, Value = 0}}
 end
 
 NotifyOnNewObject("/Script/MG.yFreeCameraActorBase", function(FreeCamera)
@@ -85,7 +103,7 @@ NotifyOnNewObject("/Script/MG.yFreeCameraActorBase", function(FreeCamera)
 end)
 
 NotifyOnNewObject("/Script/Engine.AnimInstance", function(Anim)
-    applySkirtPhysics(Anim, true)
+    applySkirtPhysics(Anim, skirtPhysicsModded)
 end)
 
 NotifyOnNewObject("/Script/Engine.SkeletalMeshActor", function(Actor)
@@ -95,4 +113,7 @@ NotifyOnNewObject("/Script/Engine.SkeletalMeshActor", function(Actor)
     Actor:SetActorHiddenInGame(true)
 end)
 
-applySkirtPhysicsToAll(true)
+RegisterKeyBind(Key.F1, function() applySkirtPhysicsToAll(skirtPhysicsFlip) end)
+RegisterKeyBind(Key.F2, function() applySkirtPhysicsToAll(skirtPhysicsModded) end)
+
+applySkirtPhysicsToAll(skirtPhysicsModded)
