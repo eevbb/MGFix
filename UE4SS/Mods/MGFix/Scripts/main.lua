@@ -1,30 +1,49 @@
--- WARNING! These values are FRAMERATE DEPENDANT, and will give different
+-- WARNING! Skirt values are FRAMERATE DEPENDANT, and will give different
 -- results at different framerates!
--- The defaults were tested at 60 FPS
+-- The defaults were tested at 60 FPS.
 
--- Use positive values to make skirts floatier and more likely to lift
--- Or you can use negative values to "weigh" skirts down
--- Set to 0 for vanilla behavior
-SKIRT_GRAVITY = 2500
+-- Use positive values to make skirts floatier and more likely to lift.
+-- Or you can use negative values to "weigh" skirts down.
+-- Warning! if you set this to a high number (like ~2000 or so) the skirt may
+-- look fine during gameplay, but flip completely upside-down during certain
+-- cutscenes, like some special moves.
+-- Set to 0 for vanilla behavior.
+SKIRT_GRAVITY = 100
 
--- Controls how drastic skirt floppiness is allowed to be
+-- Controls how drastic skirt floppiness is allowed to be.
 -- Use values closer to 0 for floppier skirts that react more strongly to
--- character movements
--- Set to 1 for vanilla behavior
+-- character movements.
+-- Set to 1 for vanilla behavior.
 SKIRT_DAMPING = 0.5
 
--- Controls how closely skirts should conform or return to a "neutral" position
+-- Controls how closely skirts should conform or return to a
+-- "neutral" position.
 -- Careful! if you set this to 0 and gravity to a positive number, the skirt
 -- *will* go up and never come back down! 🤣
--- Set to 1 for vanilla behavior
-SKIRT_STIFFNESS = 0.7
+-- Set to 1 for vanilla behavior.
+SKIRT_STIFFNESS = 0.4
 
--- Disable the angle limit on the back of the skirt so it can flip properly
--- Set to false for vanilla behavior
+-- Disable the angle limit on the back of the skirt so it can flip properly.
+-- Set to false for vanilla behavior.
 SKIRT_UNCONSTRAINED = true
 
-function applySkirtPhysics(inst)
+-- Hide the pesky drone during vent crawling cutscenes.
+-- Set to false for vanilla behavior.
+HIDE_VENT_DRONE = true
+
+function applySkirtPhysics(inst, modded)
     if inst == nil or not inst:IsValid() then return end
+
+    local gravity = 0
+    local damping = 1
+    local stiffness = 1
+    local unconstrained = false
+    if modded then
+        gravity = SKIRT_GRAVITY
+        damping = SKIRT_DAMPING
+        stiffness = SKIRT_STIFFNESS
+        unconstrained = SKIRT_UNCONSTRAINED
+    end
 
     local count = 0
     while true do
@@ -39,14 +58,23 @@ function applySkirtPhysics(inst)
         if target == nil or not target:IsValid() or count > 100 then break end
 
         if string.find(target.RootBone.BoneName:ToString(), "Skirt") then
-            target.Gravity.Z = SKIRT_GRAVITY
-            target.DampingCurveData.EditorCurveData.Keys = {{Time = 0, Value = SKIRT_DAMPING}}
-            target.StiffnessCurveData.EditorCurveData.Keys = {{Time = 0, Value = SKIRT_STIFFNESS}}
-            if SKIRT_UNCONSTRAINED then
+            target.Gravity.Z = gravity
+            target.DampingCurveData.EditorCurveData.Keys = {{Time = 0, Value = damping}}
+            target.StiffnessCurveData.EditorCurveData.Keys = {{Time = 0, Value = stiffness}}
+            if unconstrained then
                 target.LimitAngleCurveData.EditorCurveData.Keys = {{Time = 0, Value = 0}}
             else
                 target.LimitAngleCurveData.EditorCurveData.Keys = {}
             end
+        end
+    end
+end
+
+function applySkirtPhysicsToAll(modded)
+    local insts = FindAllOf("AnimInstance")
+    if insts ~= nil then
+        for _, inst in ipairs(insts) do
+            applySkirtPhysics(inst, modded)
         end
     end
 end
@@ -57,12 +85,14 @@ NotifyOnNewObject("/Script/MG.yFreeCameraActorBase", function(FreeCamera)
 end)
 
 NotifyOnNewObject("/Script/Engine.AnimInstance", function(Anim)
-    applySkirtPhysics(Anim)
+    applySkirtPhysics(Anim, true)
 end)
 
-local insts = FindAllOf("AnimInstance")
-if insts ~= nil then
-    for _, inst in ipairs(insts) do
-        applySkirtPhysics(inst)
-    end
-end
+NotifyOnNewObject("/Script/Engine.SkeletalMeshActor", function(Actor)
+    local name = Actor:GetFullName()
+    -- This *may* end up triggering during other cutscenes... not sure.
+    if not string.find(name, "SK_Drone") then return end
+    Actor:SetActorHiddenInGame(true)
+end)
+
+applySkirtPhysicsToAll(true)
