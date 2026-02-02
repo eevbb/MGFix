@@ -1,8 +1,4 @@
-* Unlock camera bounds in free camera (BrotherCommonParam)
-
 * Document panties buffs (UnderwearBuffParam)
-
-* Panties reroll/select?
 
 * Notes...
 
@@ -11,3 +7,5 @@ Kawaii Physics:
 
 Skeletal Mesh:
 `yCSkeletalMeshComponent /Game/Product/Level/Menu/MainMenu/MainMenuTop.MainMenuTop:PersistentLevel.BP_1010_MachineGirl_02_C_2147479494.Mesh`
+
+`yInGamePermanentDataSubsystem /Engine/Transient.GameEngine_2147482601:GlobalParameter_C_2147482551.yInGamePermanentDataSubsystem_2147482506`

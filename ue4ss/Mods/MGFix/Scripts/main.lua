@@ -31,6 +31,13 @@ SKIRT_UNCONSTRAINED = true
 -- Set to false for vanilla behavior.
 HIDE_VENT_DRONE = true
 
+RegisterCustomProperty({
+    ["Name"] = "UnderwearIndex",
+    ["Type"] = PropertyTypes.IntProperty,
+    ["BelongsToClass"] = "/Script/MG.yInGamePermanentDataSubsystem",
+    ["OffsetInternal"] = 0xA8,
+})
+
 function applySkirtPhysics(inst, func)
     if inst == nil or not inst:IsValid() then return end
 
@@ -97,6 +104,12 @@ function skirtPhysicsFlip(target)
     target.LimitAngleCurveData.EditorCurveData.Keys = {{Time = 0, Value = 0}}
 end
 
+function setUnderwearIndex(i)
+    local data = FindFirstOf("yInGamePermanentDataSubsystem")
+    if data == nil or not data:IsValid() then return end
+    data.UnderwearIndex = i
+end
+
 NotifyOnNewObject("/Script/MG.yFreeCameraActorBase", function(FreeCamera)
     local sphere = FreeCamera.SphereComponent
     sphere.SetCollisionResponseToAllChannels("ECR_Ignore")
@@ -115,5 +128,13 @@ end)
 
 RegisterKeyBind(Key.F1, function() applySkirtPhysicsToAll(skirtPhysicsFlip) end)
 RegisterKeyBind(Key.F2, function() applySkirtPhysicsToAll(skirtPhysicsModded) end)
+
+RegisterKeyBind(Key.ONE, { ModifierKey.CONTROL }, function() setUnderwearIndex(0) end)
+RegisterKeyBind(Key.TWO, { ModifierKey.CONTROL }, function() setUnderwearIndex(1) end)
+RegisterKeyBind(Key.THREE, { ModifierKey.CONTROL }, function() setUnderwearIndex(2) end)
+RegisterKeyBind(Key.FOUR, { ModifierKey.CONTROL }, function() setUnderwearIndex(3) end)
+RegisterKeyBind(Key.FIVE, { ModifierKey.CONTROL }, function() setUnderwearIndex(4) end)
+RegisterKeyBind(Key.SIX, { ModifierKey.CONTROL }, function() setUnderwearIndex(5) end)
+RegisterKeyBind(Key.SEVEN, { ModifierKey.CONTROL }, function() setUnderwearIndex(6) end)
 
 applySkirtPhysicsToAll(skirtPhysicsModded)
