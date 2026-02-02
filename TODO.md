@@ -2,8 +2,6 @@
 
 * Document panties buffs (UnderwearBuffParam)
 
-* Remove MMC default binding (IMC_InGame_Default)?
-
 * Panties reroll/select?
 
 * Notes...
