@@ -12,7 +12,9 @@ A Full Metal Schoolgirl mod.
 
 * Unlocked free camera
 
-  * Get as close as you like to characters, and even go through objects!
+  * Get as close as you like to characters!
+
+  * Move the camera through objects, and as far as you like as well.
 
 * Custom skirt physics
 
@@ -53,6 +55,8 @@ There are comments to help you understand what each value does!
 * New in 1.2
 
   * Unbind middle click button
+
+  * Greatly extend free camera range
 
 * New in 1.1
 
