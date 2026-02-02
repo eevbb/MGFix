@@ -1,4 +1,10 @@
-* Unlock camera bounds in free camera?
+* Unlock camera bounds in free camera (BrotherCommonParam)
+
+* Document panties buffs (UnderwearBuffParam)
+
+* Remove MMC default binding (IMC_InGame_Default)?
+
+* Panties reroll/select?
 
 * Notes...
 
