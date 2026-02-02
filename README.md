@@ -34,6 +34,10 @@ A Full Metal Schoolgirl mod.
 
   * This is hardcoded to center the camera during gameplay and cannot be changed, which is pretty silly. If you'd like to restore this keybind, you can do so through the game's keybind configuration (the binding is set to RShift by default).
 
+* Underwear selection! Stick to your favorites!
+
+  * Press `Ctrl+1` through `Ctrl+7` to choose. Your selection updates when you enter a new floor.
+
 ## Download and installation
 
 [Download💖](https://github.com/eevbb/MGFix/releases/latest)
@@ -57,6 +61,8 @@ There are comments to help you understand what each value does!
   * Unbind middle click button
 
   * Greatly extend free camera range
+
+  * Underwear selection
 
 * New in 1.1
 
