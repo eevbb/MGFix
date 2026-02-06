@@ -56,6 +56,10 @@ There are comments to help you understand what each value does!
 
 ## Changelog
 
+* New in 1.3
+
+  * Change skirts so all bones are affected by physics
+
 * New in 1.2
 
   * Unbind middle click button
