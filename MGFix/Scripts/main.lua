@@ -64,7 +64,9 @@ function applySkirtPhysics(inst, func)
         count = count + 1
         if target == nil or not target:IsValid() or count > 100 then break end
 
-        if string.find(target.RootBone.BoneName:ToString(), "Skirt") then
+        if string.find(target.RootBone.BoneName:ToString():lower(), "skirt")
+            or string.find(target.RootBone.BoneName:ToString():lower(), "mg01_jacket")
+            then
             func(target)
         end
     end
