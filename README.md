@@ -54,6 +54,12 @@ Locate the main.lua file found in `MG\Binaries\Win64\ue4ss\Mods\MGFix\Scripts`, 
 
 There are comments to help you understand what each value does!
 
+## Development
+
+You will need Unreal Engine 5.5 and [retoc](https://github.com/trumank/retoc).
+
+`.bat` and `.sh` scripts are provided to automate build/install tasks. You'll need to set the `UE55_PATH` environment variable (your Unreal Engine 5.5 install directory) and `GAME_PATH` (your Full Metal Schoolgirl install directory) for them to work.
+
 ## Changelog
 
 * New in 1.3

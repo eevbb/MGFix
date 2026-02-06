@@ -1,6 +1,6 @@
 @echo off
 
-cd "C:/Program Files/Epic Games/UE_5.5/Engine/Build/BatchFiles/"
+cd "%UE55_PATH%/Engine/Build/BatchFiles/"
 
 RunUAT.bat BuildCookRun ^
     -targetplatform=Win64 ^

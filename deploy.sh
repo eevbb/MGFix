@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 dir="out/"
 
 if [ -d "$dir" ] ; then

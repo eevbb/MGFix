@@ -2,11 +2,11 @@
 
 set -e
 
-GAME_PATH="C:/Program Files (x86)/Steam/steamapps/common/FULL METAL SCHOOLGIRL"
-PROJ_NAME="MG"
-MODS_PATH="$GAME_PATH/$PROJ_NAME/Content/Paks/~mods"
+[[ -z "$GAME_PATH" ]] && { echo "GAME_PATH not set" ; exit 1; }
 
-cd "${0%/*}/Build/Windows/$PROJ_NAME/Content/Paks/"
+MODS_PATH="$GAME_PATH/MG/Content/Paks/~mods"
+
+cd "${0%/*}/Build/Windows/MG/Content/Paks/"
 [ -d "$MODS_PATH" ] || mkdir "$MODS_PATH"
 
 PAK_NAME="pakchunk1-Windows"
