@@ -62,6 +62,10 @@ You will need Unreal Engine 5.5 and [retoc](https://github.com/trumank/retoc).
 
 ## Changelog
 
+* New in 1.4
+
+  * Make Ryoko's hanging jacket straps affected by physics too 
+
 * New in 1.3
 
   * Change skirts so all bones are affected by physics
